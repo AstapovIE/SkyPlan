@@ -24,7 +24,7 @@ def get_token(request: Request):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Token not found')
     return token
 
-async def get_current_user(db:Session, token: str = Depends(get_token)):
+async def get_current_user(token:str = Depends(get_token)):
     try:
         auth_data = {"secret_key": SECRET_KEY, "algorithm": ALGORITHM}#переделать в виде .env
         payload = jwt.decode(token, auth_data['secret_key'], algorithms=[auth_data['algorithm']])
@@ -40,8 +40,14 @@ async def get_current_user(db:Session, token: str = Depends(get_token)):
     if not user_id:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='No user with this ID')
 
+    """user = crud.get_user(db, int(user_id))
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='User not found')
+     """
+    return  user_id
+
+def user_with_token(db:Session, user_id):
     user = crud.get_user(db, int(user_id))
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='User not found')
-
     return user

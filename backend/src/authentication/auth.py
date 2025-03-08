@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from  .db_users import crud,models, schemes
 from .db_users.database import SessionLocal, engine
-from .authdata import create_access_token, get_current_user
+from .authdata import create_access_token, get_current_user, user_with_token
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -52,11 +52,11 @@ async def auth_user(response: Response, user:schemes.User, db:Session=Depends(ge
     response.set_cookie(key="users_access_token", value=access_token, httponly=True)# no Js acsess
     return {'access_token': access_token, 'refresh_token': None}
 
-#@auth.get("/me/")#косяк будет
-#async def get_me(user:schemes.User = Depends(get_current_user) , db:Session=Depends(get_db)):
-    return user
+@auth.get("/me/")
+async def get_me(user:schemes.User = Depends(get_current_user) , db:Session=Depends(get_db)):
+    user_with_token(db, user)
 
-#@auth.post("/logout/")
-#async def logout_user(response: Response):
-    #response.delete_cookie(key="users_access_token")
-    #return {'message': 'Пользователь успешно вышел из системы'}
+@auth.post("/logout/")
+async def logout_user(response: Response):
+    response.delete_cookie(key="users_access_token")
+    return {'message': 'Пользователь успешно вышел из системы'}
