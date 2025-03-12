@@ -50,4 +50,5 @@ def user_with_token(db:Session, user_id):
     user = crud.get_user(db, int(user_id))
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='User not found')
+    print(user)
     return user
