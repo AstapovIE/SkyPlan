@@ -43,7 +43,8 @@ async def register_user(user:schemes.User, db:Session=Depends(get_db)):
             detail='User with such username already exicts'
         )
     crud.create_user(db=db,user=user)
-    return {'message': 'Вы успешно зарегистрированы!'}
+    # no Js acsess
+    return {'Done'}
 
 @auth.post("/login")
 async def auth_user(response: Response, user:schemes.UserAuth, db:Session=Depends(get_db)):

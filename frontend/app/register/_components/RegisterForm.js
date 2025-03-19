@@ -1,47 +1,23 @@
 "use client";
 
 import { useContext, useState} from "react";
-import Usercontext from "../../contexts/context";
+import Newcontext from "../../contexts/registercontext";
 import axios from "axios";
-import styles from './LoginForm.module.css';
+import styles from './RegisterForm.module.css';
 import Link from 'next/link'
 
-export function LoginForm() {
-    const {login} = useContext(Usercontext);
+export function RegisterForm() {
+    const {register} = useContext(Newcontext);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        login(username, password)
+        await register(username, password)
     };
     return (
-    <div className={styles.final}>
-    <div className='h-screen flex flex-col items-center relative px-6 py-12 lg:px-8'>
-      <div className="flex flex-col overflow-hidden bg-[#5b3945] border border-[#e89c92] rounded-xl shadow-lg max md:flex-row md:flex-1 w-1/2 h-1/7">
-      <div
-          className="p-4 py-6 text-white bg-[#2a161e] border border-[#e89c92] md:w-2/5 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly"
-        >
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img className="mx-auto h-30 w-auto" src={'/SKYPLAN.png'} alt="Your Company"></img>
-          <p className="text-center text-gray-500 text-xs mb-10">
-            &copy;2025 SIMS. No rights reserved.
-          </p>
-          <p className="flex flex-col text-2xl mb-4 items-center justify-center mt-10 text-center">
-            <span>Don't have an account?</span>
-          </p>
-          <p className="flex flex-col text-3xl mb-10 items-center justify-center text-center">
-          <Link href="/register">
-          <button className="underline"> Get Started!</button>
-          </Link>
-          </p>
-          <p className="mt-6 text-sm text-center text-gray-500">
-            Read our <a href="#" className="underline">terms</a> and <a href="#" className="underline">conditions</a>
-          </p>
-      </div>
-      </div>
       <div className=" flex flex-1 flex-col items-center justify-center">
-      <h2 className="mt-15 mb-5 text-center text-4xl font-bold  text-white ">Sign in to your account</h2>
+      <h2 className="mt-15 mb-5 text-center text-4xl font-bold  text-white ">Register</h2>
       <form onSubmit={handleSubmit} className="flex flex-col ml-1 gap-3">
         <div className="flex flex-col gap-2">
           <div className="flex flex-row gap-1">
@@ -60,8 +36,5 @@ export function LoginForm() {
         <button type="submit" className="mt-4 btn btn-primary h-12 font-semibold transition-colors duration-300 bg-[#c43c26] rounded-md shadow hover:bg-[#621e13] focus:outline-none focus:[#c43c26] focus:ring-2 text-2xl  text-white">Login</button>
       </form>
       </div>
-      </div>
-    </div>
-    </div>
   );
 };

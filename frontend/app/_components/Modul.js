@@ -6,7 +6,7 @@ export const Modul = ({handleShowModal}) => {
   return (
     <div className='h-screen bg-[#110808] flex flex-col items-center justify-center relative'>
         <h2 className='rubik-death  text-9xl text-white absolute top-[10rem] tracking-wide'>All you need is just </h2>
-        <Link href="/login">
+        <Link href="/survay">
         <button
         className=' bg-[#110808] py-40 px-80 justify-center flex items-center rounded-md monoton-regular text-8xl text-[#c43c26]'>
             ONE CLICK

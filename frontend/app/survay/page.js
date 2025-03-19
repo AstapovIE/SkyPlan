@@ -1,9 +1,10 @@
-
+'use client'
+import {Quiz} from "./_components/SurvayForm";
 
 export default function Page() {
   return (
     <div>
-        <h1 className="text-white">Welcome</h1>
+        <Quiz/>
     </div>
   );
 }
