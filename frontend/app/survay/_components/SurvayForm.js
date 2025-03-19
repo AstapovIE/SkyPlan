@@ -5,14 +5,7 @@ import axios from "axios";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import styles from './SurvayForm.module.css';
-import { Cpu } from 'lucide-react';
-import { ShoppingBasket } from 'lucide-react';
-import { Cross } from 'lucide-react';
-import { Landmark } from 'lucide-react';
-import { Dumbbell } from 'lucide-react';
-import { Book } from 'lucide-react';
-import { ChefHat } from 'lucide-react';
-import { Headset } from 'lucide-react';
+import { Cpu, ShoppingBasket, Cross, Landmark, Dumbbell, Book, ChefHat, Headset, Sun, Cloud, Umbrella, Snowflake, Palette, Pipette,  PaintbrushVertical, PaintRoller, SunMedium, SnowflakeIcon} from 'lucide-react';
 import Checkbox from './Checkbox';
 
 export function Quiz()  {
@@ -60,142 +53,210 @@ export function Quiz()  {
     <div className="flex h-screen w-screen items-center relative">
       <div className={styles.card}>
       <div className={styles.card__border}></div>
-        {currentStep === 0 && (
-          <div className="flex flex-col items-center mt-5">
-            <h3 className="text-[#ce848a] text-4xl text-bold rubik-death">What kind of business would you like?</h3>
-            <div className="flex flex-col mt-14">
-            <div className={styles.container}>
-            <div className={styles.container2}>
-            <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
-              <input type="checkbox" value="Tech" onChange={(e) => setBusiness(e.target.checked ? [...business, e.target.value] : business.filter(item => item !== e.target.value))}/>
-              <div className="flex flex-row mr-3">Tech <Cpu /></div>
-            </label>
-            </div>
-            </div>
-            <div className={styles.container}>
-            <div className={styles.container2}>
-            <label className="text-[#ce848a] rubik-death text-4xl  flex flex-row">
-              <input type="checkbox" value="Retail" onChange={(e) => setBusiness(e.target.checked ? [...business, e.target.value] : business.filter(item => item !== e.target.value))} />
-              <div className="flex flex-row mr-3">Retail  <ShoppingBasket /></div>
-            </label>
-            </div>
-            </div>
-            <div className={styles.container}>
-            <div className={styles.container2}>
-            <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
-              <input type="checkbox" value="Healthcare" onChange={(e) => setBusiness(e.target.checked ? [...business, e.target.value] : business.filter(item => item !== e.target.value))} />
-              <div className="flex flex-row mr-3">Healthcare  <Cross /></div>
-            </label>
-            </div>
-            </div>
-            <div className={styles.container}>
-            <div className={styles.container2}>
-            <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
-              <input type="checkbox" value="Finance" onChange={(e) => setBusiness(e.target.checked ? [...business, e.target.value] : business.filter(item => item !== e.target.value))} />
-              <div className="flex flex-row mr-3">Finance  <Landmark /></div>
-            </label>
-            </div>
-            </div>
-            </div>
-            </div>
-        )}
+      {currentStep === 0 && (
+  <div className="flex flex-col items-center mt-5">
+    <h3 className="text-[#ce848a] text-4xl text-bold rubik-death">What kind of business would you like?</h3>
+    <div className="flex flex-col mt-14">
+
+      <div className={styles.container}>
+        <div className={styles.container2}>
+          <label className="text-[#ce848a] rubik-death text-4xl flex flex-row mr-4">
+            <Checkbox value="Tech" checked={business.includes("Tech")} 
+              onChange={(val) => setBusiness(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+            <div className="flex flex-row mr-3"><div className="text-[#2a161e]">aaaaa</div>Tech <Cpu /></div>
+          </label>
+        </div>
+      </div>
+
+      <div className={styles.container}>
+        <div className={styles.container2}>
+          <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
+            <Checkbox value="Retail" checked={business.includes("Retail")} 
+              onChange={(val) => setBusiness(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+            <div className="flex flex-row mr-3"><div className="text-[#2a161e]">aaaaa</div>Retail <ShoppingBasket /></div>
+          </label>
+        </div>
+      </div>
+
+      <div className={styles.container}>
+        <div className={styles.container2}>
+          <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
+            <Checkbox value="Healthcare" checked={business.includes("Healthcare")} // Removed space
+              onChange={(val) => setBusiness(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+            <div className="flex flex-row mr-3"><div className="text-[#2a161e]">a</div>Healthcare <Cross /></div>
+          </label>
+        </div>
+      </div>
+
+      <div className={styles.container}>
+        <div className={styles.container2}>
+          <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
+            <Checkbox value="Finance" checked={business.includes("Finance")} // Removed space
+              onChange={(val) => setBusiness(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+            <div className="flex flex-row mr-3"><div className="text-[#2a161e]">aaa</div>Finance <Landmark /></div>
+          </label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+)}
         {currentStep === 1 && (
           <div className="flex flex-col items-center mt-5">
-          <h3 className="text-[#ce848a] text-4xl text-bold rubik-death">What kind of business would you like?</h3>
-          <div className="flex flex-col mt-14">
-          <div className={styles.container}>
-          <div className={styles.container2}>
+    <h3 className="text-[#ce848a] text-4xl text-bold rubik-death">What kind of hobby you like?</h3>
+    <div className="flex flex-col mt-14">
+
+      <div className={styles.container}>
+        <div className={styles.container2}>
+          <label className="text-[#ce848a] rubik-death text-4xl flex flex-row mr-4">
+            <Checkbox value="Reading" checked={hobbies.includes("Reading")} 
+              onChange={(val) => setHobbies(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+            <div className="flex flex-row mr-3"><div className="text-[#2a161e]">a</div>Reading <Book /></div>
+          </label>
+        </div>
+      </div>
+
+      <div className={styles.container}>
+        <div className={styles.container2}>
           <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
-          <input type="checkbox" value="Reading" onChange={(e) => setHobbies(e.target.checked ? [...hobbies, e.target.value] : hobbies.filter(item => item !== e.target.value))} />
-            <div className="flex flex-row mr-3">Reading <Book /></div>
+            <Checkbox value="Sport" checked={hobbies.includes("Sport")} 
+              onChange={(val) => setHobbies(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+            <div className="flex flex-row mr-3"><div className="text-[#2a161e]">aaa</div>Sport <Dumbbell /></div>
           </label>
-          </div>
-          </div>
-          <div className={styles.container}>
-          <div className={styles.container2}>
-          <label className="text-[#ce848a] rubik-death text-4xl  flex flex-row">
-          <input type="checkbox" value="Reading" onChange={(e) => setHobbies(e.target.checked ? [...hobbies, e.target.value] : hobbies.filter(item => item !== e.target.value))} />
-            <div className="flex flex-row mr-3">Sport<Dumbbell /></div>
-          </label>
-          </div>
-          </div>
-          <div className={styles.container}>
-          <div className={styles.container2}>
+        </div>
+      </div>
+
+      <div className={styles.container}>
+        <div className={styles.container2}>
           <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
-          <input type="checkbox" value="Reading" onChange={(e) => setHobbies(e.target.checked ? [...hobbies, e.target.value] : hobbies.filter(item => item !== e.target.value))} />
-            <div className="flex flex-row mr-3">Cooking<ChefHat /></div>
+            <Checkbox value="Cooking" checked={hobbies.includes("Cooking")} // Removed space
+              onChange={(val) => setHobbies(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+            <div className="flex flex-row mr-3"><div className="text-[#2a161e]">a</div>Cooking <ChefHat /></div>
           </label>
-          </div>
-          </div>
-          <div className={styles.container}>
-          <div className={styles.container2}>
+        </div>
+      </div>
+
+      <div className={styles.container}>
+        <div className={styles.container2}>
           <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
-          <input type="checkbox" value="Reading" onChange={(e) => setHobbies(e.target.checked ? [...hobbies, e.target.value] : hobbies.filter(item => item !== e.target.value))} />
-            <div className="flex flex-row mr-3">Gaming<Headset /></div>
+            <Checkbox value="Gaming" checked={hobbies.includes("Gaming")} // Removed space
+              onChange={(val) => setHobbies(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+            <div className="flex flex-row mr-3"><div className="text-[#2a161e]">a</div>Gaming <Headset /></div>
           </label>
-          </div>
-          </div>
-          </div>
-          </div>
-        )}
+        </div>
+      </div>
+
+    </div>
+  </div>
+)}
         {currentStep === 2 && (
           <div className="flex flex-col items-center mt-5">
-            <h3 className="text-[#ce848a] text-4xl text-bold rubik-death">What is your favorite color?</h3>
-            <label>
-              <input type="checkbox" value="Red" onChange={(e) => setColor(e.target.checked ? [...color, e.target.value] : color.filter(item => item !== e.target.value))} />
-              Red
-            </label>
-            <label>
-              <input type="checkbox" value="Blue" onChange={(e) => setColor(e.target.checked ? [...color, e.target.value] : color.filter(item => item !== e.target.value))} />
-              Blue
-            </label>
-            <label>
-              <input type="checkbox" value="Green" onChange={(e) => setColor(e.target.checked ? [...color, e.target.value] : color.filter(item => item !== e.target.value))} />
-              Green
-            </label>
-            <label>
-              <input type="checkbox" value="Yellow" onChange={(e) => setColor(e.target.checked ? [...color, e.target.value] : color.filter(item => item !== e.target.value))} />
-              Yellow
-            </label>
-          </div>
-        )}
+    <h3 className="text-[#ce848a] text-4xl text-bold rubik-death">What is your favorite color?</h3>
+    <div className="flex flex-col mt-14">
+
+      <div className={styles.container}>
+        <div className={styles.container2}>
+          <label className="text-[#ce848a] rubik-death text-4xl flex flex-row mr-4">
+            <Checkbox value="Red" checked={color.includes("Red")} 
+              onChange={(val) => setColor(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+            <div className="flex flex-row mr-3"><div className="text-[#2a161e]">aa</div>Red<div className="text-red-600"><Palette/></div></div>
+          </label>
+        </div>
+      </div>
+
+      <div className={styles.container}>
+        <div className={styles.container2}>
+          <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
+            <Checkbox value="Green" checked={color.includes("Green")} 
+              onChange={(val) => setColor(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+            <div className="flex flex-row mr-3"><div className="text-[#2a161e]">a</div>Green<div className="text-green-700"><PaintRoller/></div></div>
+          </label>
+        </div>
+      </div>
+
+      <div className={styles.container}>
+        <div className={styles.container2}>
+          <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
+            <Checkbox value="Blue" checked={color.includes("Blue")} // Removed space
+              onChange={(val) => setColor(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+            <div className="flex flex-row mr-3"><div className="text-[#2a161e]">aa</div>Blue<div className="text-blue-800"><PaintbrushVertical/></div></div>
+          </label>
+        </div>
+      </div>
+
+      <div className={styles.container}>
+        <div className={styles.container2}>
+          <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
+            <Checkbox value="Yellow" checked={color.includes("Yellow")} // Removed space
+              onChange={(val) => setColor(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+            <div className="flex flex-row mr-3"><div className="text-[#2a161e]">a</div>Yellow<div className="text-yellow-200"><Pipette/></div></div>
+          </label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+)}
 
         {currentStep === 3 && (
-          <div className="flex flex-col items-center mt-5">
-            <h3 className="text-[#ce848a] text-4xl text-bold rubik-death">What kind of weather do you like?</h3>
-            <label>
-              <input type="checkbox" value="Sunny" onChange={(e) => setWeather(e.target.checked ? [...weather, e.target.value] : weather.filter(item => item !== e.target.value))} />
-              Sunny
-            </label>
-            <label>
-              <input type="checkbox" value="Rainy" onChange={(e) => setWeather(e.target.checked ? [...weather, e.target.value] : weather.filter(item => item !== e.target.value))} />
-              Rainy
-            </label>
-            <label>
-              <input type="checkbox" value="Snowy" onChange={(e) => setWeather(e.target.checked ? [...weather, e.target.value] : weather.filter(item => item !== e.target.value))} />
-              Snowy
-            </label>
-            <label>
-              <input type="checkbox" value="Cloudy" onChange={(e) => setWeather(e.target.checked ? [...weather, e.target.value] : weather.filter(item => item !== e.target.value))} />
-              Cloudy
-            </label>
-          </div>
-        )}
+ <div className="flex flex-col items-center mt-5">
+ <h3 className="text-[#ce848a] text-4xl text-bold rubik-death">What kind of weather do you like?</h3>
+ <div className="flex flex-col mt-14">
 
+   <div className={styles.container}>
+     <div className={styles.container2}>
+       <label className="text-[#ce848a] rubik-death text-4xl flex flex-row mr-4">
+         <Checkbox value="Sunny" checked={weather.includes("Sunny")} 
+           onChange={(val) => setWeather(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+         <div className="flex flex-row mr-3"><div className="text-[#2a161e]">a</div>Sunny<Sun/></div>
+       </label>
+     </div>
+   </div>
+
+   <div className={styles.container}>
+     <div className={styles.container2}>
+       <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
+         <Checkbox value="Rainy" checked={weather.includes("Rainy")} 
+           onChange={(val) => setWeather(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+         <div className="flex flex-row mr-3"><div className="text-[#2a161e]">aa</div>Rainy<Umbrella/></div>
+       </label>
+     </div>
+   </div>
+
+   <div className={styles.container}>
+     <div className={styles.container2}>
+       <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
+         <Checkbox value="Snowy" checked={weather.includes("Snowy")} // Removed space
+           onChange={(val) => setWeather(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+         <div className="flex flex-row mr-3"><div className="text-[#2a161e]">a</div>Snowy<SnowflakeIcon/></div>
+       </label>
+     </div>
+   </div>
+
+   <div className={styles.container}>
+     <div className={styles.container2}>
+       <label className="text-[#ce848a] rubik-death text-4xl flex flex-row">
+         <Checkbox value="Cloudy" checked={weather.includes("Cloudy")} // Removed space
+           onChange={(val) => setWeather(prev => prev.includes(val) ? prev.filter(item => item !== val) : [...prev, val])} />
+         <div className="flex flex-row mr-3"><div className="text-[#2a161e]">a</div>Cloudy<Cloud/></div>
+       </label>
+     </div>
+   </div>
+
+ </div>
+</div>
+)}
         {currentStep === 4 && (
           <div className="flex flex-col items-center mt-5">
-            <h3 className="text-[#ce848a] text-4xl text-bold rubik-death">What temperature do you like?</h3>
+            <h3 className="text-[#ce848a] text-4xl text-bold rubik-death mb-16">What temperature do you like?</h3>
             <input
               type="range"
               min="-30"
               max="50"
               value={temperature}
               onChange={(e) => setTemperature(e.target.value)}
-              style={{
-                background: `linear-gradient(to right, blue, yellow, red)`,
-              }}
-            />
-            <p>{temperature}°C</p>
+              className={styles.myslider}/>
+            <p className="text-white text-xl">{temperature}°C</p>
           </div>
         )}
 
