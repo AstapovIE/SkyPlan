@@ -1,7 +1,7 @@
-import {createContext, useState, useContext} from "react";
+"use client";
+import {createContext, useState, useContext,  useCallback} from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { redirect } from "next/navigation";
 
 
 const Newcontext = createContext();
@@ -9,30 +9,29 @@ const Newcontext = createContext();
 export const NewProvider = ({children})=>
     {
         const [user, setUser] = useState(null);
+        const router = useRouter();
 
-    const register = useCallback(async (username, password) => {
-            try{
-                const params = new URLSearchParams();
-                params.append('username', username);
-                params.append('password', password);
-                const response = await axios.post('http://localhost:8000/auth/register',  { username, password},
+        const register = useCallback(async (username, password) => {
+            try {
+                const response = await axios.post(
+                    "http://localhost:8000/auth/register",
+                    { username, password },
                     {
-                        headers:{ 'Content-Type': 'application/json'}
+                        headers: { "Content-Type": "application/json" },
                     }
                 );
-                setUser({username});
-                router.push('/survay');
+                setUser({ username });
+                router.push("/survay"); 
+            } catch (error) {
+                console.error("Registration failed:", error.response?.data || error.message);
             }
-            catch(error){
-                console.error('Login failed:', error);
-            }
-        };
-        return ( 
-        <Newcontext.Provider value={{user, register, error}}>
-            {children}
-        </Newcontext.Provider>
+        }, [router]); 
+    
+        return (
+            <Newcontext.Provider value={{ user, register }}>
+                {children}
+            </Newcontext.Provider>
         );
+    };
     
-};
-    
-export default Newcontext;
+    export default Newcontext;

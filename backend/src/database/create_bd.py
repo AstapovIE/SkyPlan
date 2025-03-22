@@ -3,9 +3,8 @@ import mysql.connector
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="your password",
+    password="milana",
 )
-
 cursor = db.cursor()
 cursor.execute("CREATE DATABASE IF NOT EXISTS Weather")
 cursor.execute("USE Weather")

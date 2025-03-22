@@ -2,7 +2,6 @@
 
 import { useContext, useState} from "react";
 import Newcontext from "../../contexts/registercontext";
-import axios from "axios";
 import styles from './RegisterForm.module.css';
 import Link from 'next/link'
 
@@ -11,7 +10,7 @@ export function RegisterForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         await register(username, password)
     };

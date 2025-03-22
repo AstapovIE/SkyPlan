@@ -8,7 +8,7 @@ def weather_data_get(name_city):
     conn = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="your password",
+            password="milana",
             database= 'Weather'
         )
     cursor = conn.cursor()

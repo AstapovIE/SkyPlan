@@ -10,7 +10,7 @@ def users_profilies_write(username,  password):
     conn = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="your password",
+            password="milana",
             database= 'Weather'
         )
     cursor = conn.cursor()

@@ -35,16 +35,16 @@ def get_user(username:str, db:Session=Depends(get_db)):
     return db_user
 
 @auth.post("/register")
-async def register_user(user:schemes.User, db:Session=Depends(get_db)):
-    db_user = crud.get_user_by_username(db, username=user.username)
+async def register_user(user:schemes.UserAuth, db:Session=Depends(get_db)):
+    db_user = crud.get_user_by_username(db, user.username)
     if db_user:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail='User with such username already exicts'
         )
-    crud.create_user(db=db,user=user)
+    new_user = crud.create_user(db=db,user=user)
     # no Js acsess
-    return {'Done'}
+    return new_user
 
 @auth.post("/login")
 async def auth_user(response: Response, user:schemes.UserAuth, db:Session=Depends(get_db)):
