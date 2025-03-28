@@ -44,7 +44,7 @@ export const AnimationOne = () => {
         <h1 ref = {textRef} className='monoton-regular uppercase text-9xl text-[#c43c26] absolute top-[10rem] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]'>
             Sky Plan
         </h1>
-        <h2 ref = {subtextRef}className='rubik-death text-4xl text-white absolute bottom-[45rem] tracking-tight'>
+        <h2 ref = {subtextRef}className='rubik-death text-4xl text-white absolute top-[18rem]  tracking-tight'>
         Your Ideas. Our Solutions.
         </h2>
     </div>
