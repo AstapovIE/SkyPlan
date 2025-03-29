@@ -3,12 +3,12 @@ import mysql.connector
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="your password",
+    password="svetlana2003!", auth_plugin='mysql_native_password'
 )
 
 cursor = db.cursor()
-cursor.execute("CREATE DATABASE IF NOT EXISTS Weather")
-cursor.execute("USE Weather")
+cursor.execute("CREATE DATABASE IF NOT EXISTS WeatherDB")
+cursor.execute("USE WeatherDB")
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS City (
                     city_id INT AUTO_INCREMENT PRIMARY KEY,

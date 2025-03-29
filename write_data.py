@@ -10,8 +10,8 @@ def users_profilies_write(username,  password):
     conn = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="your password",
-            database= 'Weather'
+            password="svetlana2003!",
+            database= 'WeatherDB'
         )
     cursor = conn.cursor()
     try:
@@ -35,8 +35,8 @@ def users_recommendation_write(recommendation):
     conn = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="your password",
-            database= 'Weather'
+            password="svetlana2003!",
+            database= 'WeatherDB'
         )
     cursor = conn.cursor()
     try:

@@ -11,8 +11,8 @@ def clean_row(row):
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="your password",
-    database= 'Weather'
+    password="svetlana2003!",
+    database= 'WeatherDB'
 )
 cursor = conn.cursor()
 
@@ -39,27 +39,25 @@ for city_id, city_name, lat, lng in cities:
    
     #данные за 2005-2025 по России
     end = datetime.now()
-    start = datetime.now()-timedelta(days=365*1)
+    start = datetime.now()-timedelta(days=365*20)
 
 
     data = Daily(point, start, end)
     weather_data = data.fetch()
-
     for date, row in weather_data.iterrows():
         cursor.execute("""
                 INSERT INTO WeatherData (city_id, time, tavg, tmin, tmax, prcp, snow, wdir, wspd, wpgt, pres, tsun)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, (city_id, date.to_pydatetime(),
-                  row['tavg'] if pd.notnull(row['tavg']) else None,
-                  row['tmin'] if pd.notnull(row['tmin']) else None,
-                  row['tmax'] if pd.notnull(row['tmax']) else None,
-                  row['prcp'] if pd.notnull(row['prcp']) else None,
-                  row['snow'] if pd.notnull(row['snow']) else None,
-                  row['wdir'] if pd.notnull(row['wdir']) else None,
-                  row['wspd'] if pd.notnull(row['wspd']) else None,
-                  row['wpgt'] if pd.notnull(row['wpgt']) else None,
-                  row['pres'] if pd.notnull(row['pres']) else None,
-                  row['tsun'] if pd.notnull(row['tsun']) else None))
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (city_id,  pd.to_datetime(date).to_pydatetime() ,
+                  float(row['tavg']) if pd.notnull(row['tavg']) else None,
+                  float(row['tmin']) if pd.notnull(row['tmin']) else None,
+                  float(row['tmax']) if pd.notnull(row['tmax']) else None,
+                  float(row['prcp']) if pd.notnull(row['prcp']) else None,
+                  float(row['snow']) if pd.notnull(row['snow']) else None,
+                  float(row['wdir']) if pd.notnull(row['wdir']) else None,
+                  float(row['wspd']) if pd.notnull(row['wspd']) else None,
+                  float(row['wpgt']) if pd.notnull(row['wpgt']) else None,
+                  float(row['pres']) if pd.notnull(row['pres']) else None,
+                  float(row['tsun']) if pd.notnull(row['tsun']) else None ))
 
     conn.commit()
 
