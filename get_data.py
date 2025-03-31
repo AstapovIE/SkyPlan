@@ -22,7 +22,7 @@ def weather_data_get(name_city):
         print(weather_data)
         return pd.DataFrame(weather_data, columns=columns)
     else:
-        print(f'Город {city_name} не найден')
+        print(f'Город {name_city} не найден')
     cursor.close()
     conn.close()
 

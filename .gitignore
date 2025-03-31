@@ -7,6 +7,13 @@ __pycache__/
 *.ipynb_checkpoints*
 .idea
 
+
+# OUR
+*.csv
+
+
+
+
 # C extensions
 *.so
 
