@@ -89,8 +89,9 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#7d415a",endCo
 }
 
 .myslider {
-  width: 500px;
-  margin-top:100px;
+  width: 600px;
+  margin-top:5px;
+  margin-left:60px;
   &::-webkit-slider-runnable-track {
     height: 5px;
     background: linear-gradient(to left, #ff0000, #6CB4EE);

@@ -21,7 +21,7 @@ app.include_router(auth.auth)
 async def root():
     return {"message": "Hello Bigger Applications!"}
 
-
+"""
 class SurveyResponse(BaseModel):
     business: list
     hobbies: list
@@ -32,6 +32,22 @@ class SurveyResponse(BaseModel):
 
 @app.post("/survey")
 async def submit_survey(response: SurveyResponse):
-    # Here you can process/store the data, for now, we return it back.
     print(response.model_dump())
     return JSONResponse(content={"message": "Survey received", "data": response.model_dump()})
+"""
+
+class SurveyResponse(BaseModel):
+    tmin: float
+    tmax: float
+    tavg: float
+    prcp: float
+    wspd: float
+    snow: float
+
+@app.post("/survey")
+async def submit_survey(response: SurveyResponse):
+    print(response.model_dump())
+    return JSONResponse(content={
+        "message": "Survey received",
+        "data": response.model_dump()
+    })

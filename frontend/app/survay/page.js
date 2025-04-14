@@ -1,5 +1,5 @@
 'use client'
-import {Quiz} from "./_components/SurvayForm";
+import {Quiz} from "./_components/Form";
 
 export default function Page() {
   return (
