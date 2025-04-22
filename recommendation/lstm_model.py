@@ -1,13 +1,10 @@
 import torch
 import torch.nn as nn
 from tqdm import tqdm
-import torch.optim as optim
+
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
-from torch.utils.data import DataLoader, TensorDataset
 
-from prepare_data import DataPreprocessor
 
 # Проверка доступности GPU
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -33,8 +30,8 @@ class WeatherLSTM(nn.Module):
         return out
 
 
-class RecommendationModel:
-    def __init__(self, weather_dataframe, user_prefs):
+class WeatherPredictModel:
+    def __init__(self, data):
         self.model = WeatherLSTM(
             input_size=9,
             hidden_size=128,
@@ -42,24 +39,26 @@ class RecommendationModel:
             output_size=5,
             target_length=30
         ).to(device)
-        data_prep = DataPreprocessor(weather_dataframe, user_prefs)
+        # data_prep = DataPreprocessor(weather_dataframe)
 
         criterion = nn.MSELoss()
         optimizer = torch.optim.Adam(self.model.parameters(), lr=1e-3)
-        X_train, y_train, X_test, y_test, self.scalers_dict, self.city_weather = data_prep.prepare_data()
-        if len(X_train) > 0:
-            X_train = torch.tensor(X_train, dtype=torch.float32).to(device)
-            y_train = torch.tensor(y_train, dtype=torch.float32).to(device)
-            X_test = torch.tensor(X_test, dtype=torch.float32).to(device)
-            y_test = torch.tensor(y_test, dtype=torch.float32).to(device)
-
-            train_loader = DataLoader(TensorDataset(X_train, y_train), batch_size=32, shuffle=True)
-            test_loader = DataLoader(TensorDataset(X_test, y_test), batch_size=32, shuffle=True)
-        else:
-            print("Недостаточно данных для создания последовательностей.")
+        train_loader, test_loader, self.scalers_dict, self.city_weather = data
+        # X_train, y_train, X_test, y_test, self.scalers_dict, self.city_weather = data_prep.prepare_data()
+        # if len(X_train) > 0:
+        #     X_train = torch.tensor(X_train, dtype=torch.float32).to(device)
+        #     y_train = torch.tensor(y_train, dtype=torch.float32).to(device)
+        #     X_test = torch.tensor(X_test, dtype=torch.float32).to(device)
+        #     y_test = torch.tensor(y_test, dtype=torch.float32).to(device)
+        #
+        #     train_loader = DataLoader(TensorDataset(X_train, y_train), batch_size=32, shuffle=True)
+        #     test_loader = DataLoader(TensorDataset(X_test, y_test), batch_size=32, shuffle=True)
+        # else:
+        #     print("Недостаточно данных для создания последовательностей.")
         self.train_model(train_loader, test_loader, criterion, optimizer, epochs=3)
 
     def train_model(self, train_loader, test_loader, criterion, optimizer, epochs=20):
+        print("Обучаем модель прогнозирования погоды ...")
         for epoch in range(epochs):
             self.model.train()
             total_loss = 0
@@ -84,13 +83,12 @@ class RecommendationModel:
                     preds = self.model(batch_x)
                     val_loss += criterion(preds, batch_y).item()
                 # print(f"Validation Loss: {val_loss / len(test_loader):.6f}")
+        print("Модель успешно обучена и сохранена в self.model")
 
 
     def predict_future_weather(self, forecast_days=30, sequence_length=90):
         """
         Прогнозирует погоду на forecast_days дней вперёд для каждого города.
-        Теперь модель предсказывает сразу весь блок [30, 5] за один шаг.
-        После предсказания делается обратная нормализация для восстановления оригинальных значений.
         """
         self.model.eval()
 
@@ -164,9 +162,9 @@ class RecommendationModel:
             # Обновляем словарь
             self.city_weather[city_id] = updated_city_df
 
-        print("Получен прогноз модели и обновлен словарь с погодой в разных городах")
+        print("Получен прогноз модели и обновлен словарь с погодой в разных городах на месяц вперед")
 
-rec = RecommendationModel(pd.read_csv("../weather_2022.csv"), None)
-rec.update_city_weather_data()
-
+    def get_prediction(self):
+        self.update_city_weather_data()
+        return self.city_weather
 

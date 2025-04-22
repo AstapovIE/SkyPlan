@@ -4,11 +4,13 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from collections import defaultdict
 
+import torch
+from torch.utils.data import DataLoader, TensorDataset
+
 class DataPreprocessor:
     """Подготовка данных для обучения"""
-    def __init__(self, weather_dataframe, user_prefs):
+    def __init__(self, weather_dataframe):
         self.df = weather_dataframe
-        self.user_prefs = user_prefs
 
     def clean_data(self):
         # Удаление ненужных колонок
@@ -98,6 +100,22 @@ class DataPreprocessor:
         X_test = np.concatenate(all_X_test, axis=0) if all_X_test else np.array([])
         y_test = np.concatenate(all_y_test, axis=0) if all_y_test else np.array([])
 
-        return X_train, y_train, X_test, y_test, scalers, city_weather
+        if len(X_train) > 0:
+            # X_train = torch.tensor(X_train, dtype=torch.float32).to(device)
+            # y_train = torch.tensor(y_train, dtype=torch.float32).to(device)
+            # X_test = torch.tensor(X_test, dtype=torch.float32).to(device)
+            # y_test = torch.tensor(y_test, dtype=torch.float32).to(device)
+            X_train = torch.tensor(X_train, dtype=torch.float32)
+            y_train = torch.tensor(y_train, dtype=torch.float32)
+            X_test = torch.tensor(X_test, dtype=torch.float32)
+            y_test = torch.tensor(y_test, dtype=torch.float32)
+
+            train_loader = DataLoader(TensorDataset(X_train, y_train), batch_size=32, shuffle=True)
+            test_loader = DataLoader(TensorDataset(X_test, y_test), batch_size=32, shuffle=True)
+        else:
+            print("Недостаточно данных для создания последовательностей.")
+
+        return train_loader, test_loader, scalers, city_weather
+        # return X_train, y_train, X_test, y_test, scalers, city_weather
 
 
