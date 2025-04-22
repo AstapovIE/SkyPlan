@@ -13,6 +13,9 @@ class DataPreprocessor:
         self.df = weather_dataframe
 
     def clean_data(self):
+        """
+        Очистка данных
+        """
         # Удаление ненужных колонок
         df = self.df.drop(columns=['Unnamed: 0', 'weather_id'], errors='ignore')
         df['time'] = pd.to_datetime(df['time'])
@@ -26,15 +29,15 @@ class DataPreprocessor:
         df[float_cols] = df[float_cols].astype('float32')
         df['city_id'] = df['city_id'].astype('int32')
 
-        print("Обработка завершена. Статистика:")
-        print(f"Всего строк: {len(df)}")
+        print("Обработка данных завершена.")
+        print(f"Всего записей погоды в разных городах: {len(df)}")
 
         return df.reset_index(drop=True)
 
     def prepare_data(self, sequence_length=90, target_length=30, step=7):
         """
-        Подготавливает данные для обучения модели LSTM
-        Возвращает данные, нормализованные отдельно по каждому городу
+        Подготавливает данные для обучения модели LSTM.
+        Возвращает data_loader'ы, данные в которых нормализованы отдельно по каждому городу.
         """
         # Добавляем синусоиды для сезонных признаков
         df = self.clean_data()
@@ -85,8 +88,6 @@ class DataPreprocessor:
             X_train_city, y_train_city = create_sequences(train_scaled, sequence_length, target_length, step)
             X_test_city, y_test_city = create_sequences(test_scaled, sequence_length, target_length, step)
 
-            # print(f"[DEBUG] Город {city_id}: Train: {len(X_train_city)}, Test: {len(X_test_city)}")
-
             if len(X_train_city) > 0:
                 all_X_train.append(X_train_city)
                 all_y_train.append(y_train_city)
@@ -101,10 +102,6 @@ class DataPreprocessor:
         y_test = np.concatenate(all_y_test, axis=0) if all_y_test else np.array([])
 
         if len(X_train) > 0:
-            # X_train = torch.tensor(X_train, dtype=torch.float32).to(device)
-            # y_train = torch.tensor(y_train, dtype=torch.float32).to(device)
-            # X_test = torch.tensor(X_test, dtype=torch.float32).to(device)
-            # y_test = torch.tensor(y_test, dtype=torch.float32).to(device)
             X_train = torch.tensor(X_train, dtype=torch.float32)
             y_train = torch.tensor(y_train, dtype=torch.float32)
             X_test = torch.tensor(X_test, dtype=torch.float32)
@@ -116,6 +113,5 @@ class DataPreprocessor:
             print("Недостаточно данных для создания последовательностей.")
 
         return train_loader, test_loader, scalers, city_weather
-        # return X_train, y_train, X_test, y_test, scalers, city_weather
 
 

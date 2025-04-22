@@ -5,10 +5,10 @@ from tqdm import tqdm
 import numpy as np
 import pandas as pd
 
-
 # Проверка доступности GPU
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Using device: {device}')
+
 
 class WeatherLSTM(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, output_size, target_length):
@@ -25,12 +25,16 @@ class WeatherLSTM(nn.Module):
         # x: [batch, seq_len, input_size]
         lstm_out, _ = self.lstm(x)
         last_hidden = lstm_out[:, -1, :]  # [batch, hidden_size]
-        out = self.fc(last_hidden)        # [batch, target_length * output_size]
+        out = self.fc(last_hidden)  # [batch, target_length * output_size]
         out = out.view(-1, self.target_length, self.output_size)  # [batch, 30, 5]
         return out
 
 
 class WeatherPredictModel:
+    """
+    Модель предсказания погодных условий
+    """
+
     def __init__(self, data):
         self.model = WeatherLSTM(
             input_size=9,
@@ -39,25 +43,17 @@ class WeatherPredictModel:
             output_size=5,
             target_length=30
         ).to(device)
-        # data_prep = DataPreprocessor(weather_dataframe)
+
+        train_loader, test_loader, self.scalers_dict, self.city_weather = data
 
         criterion = nn.MSELoss()
         optimizer = torch.optim.Adam(self.model.parameters(), lr=1e-3)
-        train_loader, test_loader, self.scalers_dict, self.city_weather = data
-        # X_train, y_train, X_test, y_test, self.scalers_dict, self.city_weather = data_prep.prepare_data()
-        # if len(X_train) > 0:
-        #     X_train = torch.tensor(X_train, dtype=torch.float32).to(device)
-        #     y_train = torch.tensor(y_train, dtype=torch.float32).to(device)
-        #     X_test = torch.tensor(X_test, dtype=torch.float32).to(device)
-        #     y_test = torch.tensor(y_test, dtype=torch.float32).to(device)
-        #
-        #     train_loader = DataLoader(TensorDataset(X_train, y_train), batch_size=32, shuffle=True)
-        #     test_loader = DataLoader(TensorDataset(X_test, y_test), batch_size=32, shuffle=True)
-        # else:
-        #     print("Недостаточно данных для создания последовательностей.")
-        self.train_model(train_loader, test_loader, criterion, optimizer, epochs=3)
+        self.train_model(train_loader, criterion, optimizer, epochs=3)
 
-    def train_model(self, train_loader, test_loader, criterion, optimizer, epochs=20):
+    def train_model(self, train_loader, criterion, optimizer, epochs=20):
+        """
+        Метод обучения модели
+        """
         print("Обучаем модель прогнозирования погоды ...")
         for epoch in range(epochs):
             self.model.train()
@@ -66,25 +62,12 @@ class WeatherPredictModel:
                 batch_x, batch_y = batch_x.to(device), batch_y.to(device)
                 optimizer.zero_grad()
 
-                preds = self.model(batch_x)  # [batch, target_length, output_size]
+                preds = self.model(batch_x)
                 loss = criterion(preds, batch_y)
                 loss.backward()
                 optimizer.step()
                 total_loss += loss.item()
-
-            # print(f"Epoch {epoch + 1}, Train Loss: {total_loss / len(train_loader):.6f}")
-
-            # Валидация
-            self.model.eval()
-            with torch.no_grad():
-                val_loss = 0
-                for batch_x, batch_y in test_loader:
-                    batch_x, batch_y = batch_x.to(device), batch_y.to(device)
-                    preds = self.model(batch_x)
-                    val_loss += criterion(preds, batch_y).item()
-                # print(f"Validation Loss: {val_loss / len(test_loader):.6f}")
         print("Модель успешно обучена и сохранена в self.model")
-
 
     def predict_future_weather(self, forecast_days=30, sequence_length=90):
         """
@@ -144,6 +127,9 @@ class WeatherPredictModel:
         return predictions
 
     def update_city_weather_data(self):
+        """
+        Обновление словаря с погодой в каждом городе
+        """
         weather_forecasts = self.predict_future_weather()
         for city_id, forecast_df in weather_forecasts.items():
             # Получаем исходный DataFrame для города
@@ -165,6 +151,8 @@ class WeatherPredictModel:
         print("Получен прогноз модели и обновлен словарь с погодой в разных городах на месяц вперед")
 
     def get_prediction(self):
+        """
+        Получение итогового словаря с прогнозом
+        """
         self.update_city_weather_data()
         return self.city_weather
-
