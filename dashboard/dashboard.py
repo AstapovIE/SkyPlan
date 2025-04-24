@@ -3,12 +3,14 @@ from dash import dcc, html
 from dash.dependencies import Input, Output
 import pandas as pd
 import plotly.express as px
+import os
 
 # 1) Загрузка данных
-df = pd.read_csv("df.csv", parse_dates=["time"])
+csv_path = os.path.join(os.path.dirname(__file__), "df.csv")
+df = pd.read_csv(csv_path, parse_dates=["time"])
 
 # 2) Инициализация Dash
-app = dash.Dash(__name__, suppress_callback_exceptions=True)
+app = dash.Dash(__name__, suppress_callback_exceptions=True,requests_pathname_prefix='/dashboard/')
 
 # 3) Макет
 app.layout = html.Div([
@@ -67,4 +69,4 @@ def update_map(date_idx, layer):
 
 # 5) Запуск
 if __name__ == "__main__":
-    app.run(debug=True, port=8050)
+    app.run(debug=True)
