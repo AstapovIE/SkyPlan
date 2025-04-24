@@ -67,4 +67,4 @@ def update_map(date_idx, layer):
 
 # 5) Запуск
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8050)
+    app.run(debug=True, port=8050)
