@@ -4,6 +4,12 @@ from pydantic import BaseModel
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+import pandas as pd
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from recommendation.recommend import Recommendation
+
 
 app=FastAPI()
 
@@ -42,12 +48,15 @@ class SurveyResponse(BaseModel):
     tavg: float
     prcp: float
     wspd: float
-    snow: float
 
 @app.post("/survey")
 async def submit_survey(response: SurveyResponse):
-    print(response.model_dump())
+    user_prefs = response.model_dump()
+    df =  pd.read_csv("./weather_2022.csv")
+    recommender = Recommendation(df, user_prefs)
+    weather_by_city_dict, rec = recommender.get_recommendation()
+    print(rec[:10])
     return JSONResponse(content={
         "message": "Survey received",
-        "data": response.model_dump()
+        "data": rec[:10]
     })

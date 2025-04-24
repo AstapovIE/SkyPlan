@@ -10,7 +10,6 @@ export function Quiz() {
   const [tavg, setTavg] = useState('');
   const [prcp, setPrcp] = useState('');
   const [wspd, setWspd] = useState('');
-  const [snow, setSnow] = useState('');
 
   const handleSubmit = async () => {
     try {
@@ -20,7 +19,6 @@ export function Quiz() {
         tavg: parseFloat(tavg),
         prcp: parseFloat(prcp),
         wspd: parseFloat(wspd),
-        snow: parseFloat(snow),
       });
       alert('Survey Submitted: ' + response.data.message);
     } catch (error) {
@@ -60,8 +58,6 @@ export function Quiz() {
             <input type="number" placeholder="Precipitation (prcp)" value={prcp} onChange={(e) => setPrcp(e.target.value)} className="rounded border-[#403043] placeholder-[#ce848a]" required/>
             <div className="text-white text-xl rubik-death">Скорость ветра</div>
             <input type="number" placeholder="Wind Speed (wspd)" value={wspd} onChange={(e) => setWspd(e.target.value)} className="rounded border-[#403043] placeholder-[#ce848a]" required />
-            <div className="text-white text-xl rubik-death">Снег</div>
-            <input type="number" placeholder="Snow (mm)" value={snow} onChange={(e) => setSnow(e.target.value)} className="rounded border-[#403043] placeholder-[#ce848a]" required />
             <button
               className="mt-6 btn btn-primary h-100px font-semibold transition-colors duration-300 bg-[#c43c26] rounded-md shadow hover:bg-[#621e13] text-2xl text-white"
               onClick={handleSubmit}
