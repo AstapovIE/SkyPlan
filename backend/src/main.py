@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.wsgi import WSGIMiddleware
 from .authentication import auth
 from pydantic import BaseModel
 from typing import List
@@ -9,13 +10,13 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from recommendation.recommend import Recommendation
-
+from dashboard.dashboard import app as dashboard
 
 app=FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:3000'],
+    allow_origins=['*'],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
@@ -26,6 +27,7 @@ app.include_router(auth.auth)
 @app.get('/')
 async def root():
     return {"message": "Hello Bigger Applications!"}
+
 
 """
 class SurveyResponse(BaseModel):
@@ -60,3 +62,5 @@ async def submit_survey(response: SurveyResponse):
         "message": "Survey received",
         "data": rec[:10]
     })
+
+app.mount("/dashboard", WSGIMiddleware(dashboard.server))

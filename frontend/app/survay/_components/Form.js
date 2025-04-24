@@ -21,6 +21,7 @@ export function Quiz() {
         wspd: parseFloat(wspd),
       });
       alert('Survey Submitted: ' + response.data.message);
+      window.location.href = "/dashboard/";
     } catch (error) {
       console.error('Error submitting survey:', error);
       alert('Failed to submit the survey. Please try again.');
