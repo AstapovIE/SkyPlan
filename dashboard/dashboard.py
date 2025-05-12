@@ -22,9 +22,20 @@ app = dash.Dash(__name__, suppress_callback_exceptions=True)
 dates = sorted(hist_df["time"].unique())
 # Отбор меток — только начало кварталов
 marks = {
-    i: {'label': date.strftime('%d.%m.%Y'), 'style': {'transform': 'rotate(90deg)', 'whiteSpace': 'nowrap', 'fontSize': '10px'}}
+    i: {
+        'label': date.strftime('%d.%m.%Y'),
+        'style': {
+            'transform': 'rotate(90deg)',
+            'whiteSpace': 'nowrap',
+            'fontSize': '12px',
+            'position': 'absolute',
+            'top': '30px',
+            'marginLeft': '-30px',
+            'textAlign': 'center'
+        },
+    }
     for i, date in enumerate(dates)
-    if date.month in (1, 4, 7, 10) and date.day == 1
+    if date.month in range(1, 11, 3) and date.day == 1 # (1, 4, 7, 10)
 }
 
 # Русские подписи для слоёв и единиц
