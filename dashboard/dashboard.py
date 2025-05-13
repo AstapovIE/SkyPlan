@@ -11,7 +11,8 @@ data_csv = os.path.join(os.path.dirname(__file__), "df.csv")
 df = pd.read_csv(data_csv, parse_dates=["time"])
 
 # Разделяем исторические и прогнозные данные
-today = pd.Timestamp(datetime.now().date())
+# today = pd.Timestamp(datetime.now().date())
+today = pd.Timestamp('2025-04-01')
 hist_df = df[df["time"] <= today]
 forecast_df = df[df["time"] > today]
 
@@ -175,7 +176,7 @@ def update_all(date_idx, layer, click_data):
         x1=max_t,
         fillcolor='lightgrey',
         opacity=0.3,
-        annotation_text='Прогноз',
+        annotation_text='',
         annotation_position='top left'
     )
     fig_t.update_xaxes(range=[min_t, max_t], tickformat='%d.%m.%Y', tickangle=45)
